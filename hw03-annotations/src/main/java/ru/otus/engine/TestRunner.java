@@ -8,6 +8,6 @@ public class TestRunner {
 
 
     public static void main (String[] args){
-        TestLauncher.run(TestFrame.class);
+        new TestLauncher(TestFrame.class);
         }
     }

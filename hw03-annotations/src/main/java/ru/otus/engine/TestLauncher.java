@@ -11,21 +11,25 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class TestLauncher {
-    private static final ArrayList<Method> beforeAnnotationMethods = new ArrayList<>();
-    private static final ArrayList<Method> testAnnotationMethods = new ArrayList<>();
-    private static final ArrayList<Method> afterAnnotationMethods = new ArrayList<>();
+    private final ArrayList<Method> beforeAnnotationMethods = new ArrayList<>();
+    private final ArrayList<Method> testAnnotationMethods = new ArrayList<>();
+    private final ArrayList<Method> afterAnnotationMethods = new ArrayList<>();
 
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
+    private final String ANSI_RESET = "\u001B[0m";
+    private final String ANSI_RED = "\u001B[31m";
+    private final String ANSI_GREEN = "\u001B[32m";
+    public final String ANSI_PURPLE = "\u001B[35m";
 
-    private static final ArrayList<TestResult> results = new ArrayList<>();
+    private final ArrayList<TestResult> results = new ArrayList<>();
 
-    private static int testPassed = 0;
-    private static int testFailed = 0;
-    private static int testSkipped = 0;
-    private static int testRunned = 0;
+    private int testPassed = 0;
+    private int testFailed = 0;
+    private int testSkipped = 0;
+    private int testRunned = 0;
+
+    public TestLauncher(Class<?> clazz){
+        run(clazz);
+    }
 
     private static Object getInstanceOfClass(Class<?> clazz) {
         Object object;
@@ -39,7 +43,7 @@ public class TestLauncher {
 
     }
 
-    private static Queue<ArrayList<Method>> getQueueWithMethods(Class<?> clazz) {
+    private Queue<ArrayList<Method>> getQueueWithMethods(Class<?> clazz) {
         Queue<ArrayList<Method>> queue = new LinkedList<>();
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Before.class)) {
@@ -62,7 +66,7 @@ public class TestLauncher {
         return queue;
     }
 
-    private static ArrayList<TestResult> invokeMethod(Object object, Queue<ArrayList<Method>> queue) {
+    private ArrayList<TestResult> invokeMethod(Object object, Queue<ArrayList<Method>> queue) {
         boolean isSuccess = true;
         for (ArrayList<Method> list : queue) {
             for (Method method : list) {
@@ -95,7 +99,7 @@ public class TestLauncher {
         return results;
     }
 
-    public static void run(Class<?> clazz){
+    private void run(Class<?> clazz){
         for (TestResult result : invokeMethod(getInstanceOfClass(clazz), getQueueWithMethods(clazz))) {
             System.out.println(result);
         }
